@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import time
 
-url = "https://www.exito.com/s?q=relojes&sort=score_desc&page=0"
+url = "https://www.exito.com/s?q=tablet+xiaomi&sort=score_desc&page=0"
 
 encabezado = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
