@@ -11,7 +11,6 @@ from nltk.corpus import stopwords
 import hashlib
 import logging
 import os
-
 # Configurar logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)

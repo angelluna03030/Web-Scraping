@@ -1,0 +1,51 @@
+{
+  "url": "https://www.exito.com/s?q=tablet+xiaomi&sort=score_desc&page=0",
+  "metadata": {
+    "title": "exito.com   Search Results",
+    "viewport": "width=device-width, initial-scale=1 user-agent=no-app",
+    "robots": "index,follow",
+    "description": "Encuentra todo para ti y tu hogar. ¡Compra Online!",
+    "og:title": "Search Results",
+    "og:description": "Encuentra todo para ti y tu hogar. ¡Compra Online!",
+    "og:url": "https://www.exito.com/s?q=tablet%20xiaomi&sort=score_desc&page=0",
+    "og:type": "website"
+  },
+  "categorization": {
+    "main_category": "product",
+    "language": "es",
+    "all_categories": {
+      "product": 2,
+      "article": 0,
+      "profile": 0,
+      "contact": 0,
+      "about": 0,
+      "service": 0
+    }
+  },
+  "main_elements": [
+    {
+      "type": "paragraph",
+      "text": "Compra y Recoge:",
+      "importance": 3
+    },
+    {
+      "type": "paragraph",
+      "text": "Los descuentos serán visualizados al seleccionar el método de pago",
+      "importance": 3
+    },
+    {
+      "type": "paragraph",
+      "text": "No tienes productos en tu carrito",
+      "importance": 3
+    },
+    {
+      "type": "image",
+      "src": "/iconExito.svg",
+      "alt": "logo",
+      "importance": 5
+    }
+  ],
+  "patterns_found": {},
+  "specific_data": null,
+  "structured_data_count": 0
+}
