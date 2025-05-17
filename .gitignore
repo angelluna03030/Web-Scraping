@@ -1,11 +1,9 @@
-/__pycache__
-
-/JSON
-/CSB
+/__pycache__/
+/JSON/
+/CSB/
 
 *.json
 *.csv
-
 /*.log
 web_cache
 *.pkl
