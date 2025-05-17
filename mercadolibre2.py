@@ -1,43 +1,64 @@
-from scrapy.item import Field
-from scrapy.item import Item
-from scrapy.spiders import Spider
+from scrapy.item import Field, Item
+from scrapy.spiders import CrawlSpider, Rule
 from scrapy.selector import Selector
 from scrapy.loader import ItemLoader
+from scrapy.linkextractors import LinkExtractor
+import scrapy  # <-- Importa scrapy para usar scrapy.Request
 
 class Producto(Item):
     titulo = Field()
     precio = Field()
-    patrocinado = Field()
-    url = Field()
+    descripcion = Field()
 
-class AmazonSpider(Spider):
-    name = "amazon_productos"
+class AmazonSpider(CrawlSpider):
+    name = "merdaolibre"
+
     custom_settings = {
-        "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
+        "USER_AGENT": "Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.6312.122 Mobile Safari/537.36",
+        "DOWNLOAD_DELAY": 2,
+        "AUTOTHROTTLE_ENABLED": True,
+        "ROBOTSTXT_OBEY": False,
+        
     }
 
-    start_urls = ["https://www.amazon.com/s?k=celulares+iphone&crid=30V5MM2J4Z3S0&sprefix=celulares+i%2Caps%2C174&ref=nb_sb_ss_p13n-pd-dpltr-ranker_1_11"]
+    start_urls = ["https://listado.mercadolibre.com.co/celulares-smartphones"]
+    allowed_domains = ["mercadolibre.com.co"]
+
+    rules = (
+        Rule(
+            LinkExtractor(allow=r'/_Desde_\d+'),
+            follow=True
+        ),
+        Rule(
+            LinkExtractor(allow=r'/MCO-\d+'),
+            callback='parse_item',
+            follow=False
+        ),
+    )
+
+    def start_requests(self):
+        for url in self.start_urls:
+            yield scrapy.Request(
+                url,
+                callback=self.parse_start_url,
+                meta={"playwright": True}
+            )
+
+    def _build_request(self, rule, link):
+        """Sobrescribe para agregar Playwright a todas las requests de reglas"""
+        return scrapy.Request(
+            url=link.url,
+            callback=self._response_downloaded,
+            meta={'playwright': True},
+            dont_filter=True
+        )
 
     def parse(self, response):
-        sel = Selector(response)
-        
-        # Buscar todos los contenedores de productos
-        productos = sel.xpath('//div[contains(@class, "s-result-item")]')
-        
+        print("Título de la página:", response.xpath('//title/text()').get())
+        productos = response.css('.ui-search-result__wrapper')
+        print("Cantidad de productos encontrados:", len(productos))
         for producto in productos:
-            item = ItemLoader(Producto(), selector=producto)
-            
-            # Extraer título del producto - buscando el elemento h2 y el texto dentro del span
-            item.add_xpath('titulo', './/h2//span/text()')
-            
-            # Extraer precio - buscando el span con clase a-offscreen
-            item.add_xpath('precio', './/span[@class="a-price"]//span[@class="a-offscreen"]/text()')
-            
-            # Verificar si es patrocinado
-            item.add_xpath('patrocinado', './/span[contains(text(), "Patrocinado")]/text()')
-            
-            # Extraer URL del producto
-            item.add_xpath('url', './/h2/parent::a/@href')
-            
-            yield item.load_item()
-
+            yield {
+                'titulo': producto.css('.ui-search-item__title::text').get(),
+                'precio': producto.css('.andes-money-amount__fraction::text').get()
+            }
