@@ -5,3 +5,5 @@
 *.json
 *.csv
 
+/web_cache/
+
