@@ -4,14 +4,4 @@
 
 *.json
 *.csv
-/*.log
-web_cache
-*.pkl
-*.pkl.gz
-*.pkl.bz2
-*.pkl.xz
-*.pkl.zstd
-*.pkl.lz4
-*.pkl.lz4.frame
-*.pkl.snappy
-*.pkl.msgpack
+
